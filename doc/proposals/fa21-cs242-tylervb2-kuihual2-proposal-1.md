@@ -1,7 +1,7 @@
 # Graphical RPG
 Tyler Barton (tylervb2) | Moderator: Kyle Liu (kuihual2)
 
-This is a Java game
+A client-server java RPG which utilizes MVC concepts to properly manage both data management and visuals.
 
 ## Abstract
 ### Project Purpose
