@@ -7,4 +7,5 @@
 # Editor-based HTTP Client requests
 /httpRequests/
 
+# Java class files
 *.class
