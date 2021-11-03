@@ -38,6 +38,7 @@ public class GraphicsController extends DrawingArea {
         // Test
         fill(0x00FFAAFF);
         addSprite(new Sprite("amazon"), 263, 150);
+        addSprite(new Sprite("amazon"), 10, 10);
         addSprite(new Sprite("black"), getCenterX(), getCenterY());
     }
 
@@ -60,6 +61,7 @@ public class GraphicsController extends DrawingArea {
         spriteCount++;
         sprites[slot] = sprite;
 
+        // Drawing
         int sWidth = sprite.width;
         int sHeight = sprite.height;
         int[] pixels = sprite.getPixels();
