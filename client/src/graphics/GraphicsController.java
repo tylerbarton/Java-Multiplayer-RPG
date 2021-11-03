@@ -103,14 +103,13 @@ public class GraphicsController extends DrawingArea {
      * @param y screen position
      * @return True if hit, else false
      */
-    public boolean containsSprite(int x, int y){
+    public Sprite containsSprite(int x, int y){
         for (int i = 0; i < spriteCount; i++) {
             if(sprites[i].containsPoint(x,y)){
-                return true;
-                // TODO: return the sprite instead
+                return sprites[i];
             }
         }
-        return false;
+        return null;
     }
 
 }
