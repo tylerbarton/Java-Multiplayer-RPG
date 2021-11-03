@@ -4,9 +4,19 @@ package src.world;
  * Represents the world map the player will be interacting with
  */
 public class WorldMap {
-    int[][] spriteData;
-    int[][] collisionData;
+    private EntityHandler entityHandler;
+    private int dimX, dimY;
+    private int[][] spriteData;
+    private int[][] collisionData; // 1-impassable, 0-walkable
 
+
+    public WorldMap(int width, int height){
+        dimX = width;
+        dimY = height;
+        spriteData = new int[height][width];
+        collisionData = new int[height][width];
+        entityHandler = new EntityHandler();
+    }
 
     /**
      * Converts screen position to world position
