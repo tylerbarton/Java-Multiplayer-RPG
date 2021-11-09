@@ -4,6 +4,9 @@ package src;
  * Contains configurable options applicable to the entire server.
  */
 public class Config {
+    public final static String HOST = "127.0.0.1";
+    public final static int PORT = 10242;
+
     /**
      * Tick (or update) rate for the server
      */
