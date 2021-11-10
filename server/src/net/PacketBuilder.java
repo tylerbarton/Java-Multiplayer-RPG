@@ -7,13 +7,13 @@ import io.netty.buffer.Unpooled;
  * Similar to StringBuilder, acts as a way to build a packet with appropriate data
  * @author Tyler Barton
  */
-public class PacketFactory {
+public class PacketBuilder {
     // Variables
     private int opcode;
     private ByteBuf payload = Unpooled.buffer();
 
-    public PacketFactory(){ this(0); }
-    public PacketFactory(int opcode){this.opcode = opcode;}
+    public PacketBuilder(){ this(0); }
+    public PacketBuilder(int opcode){this.opcode = opcode;}
 
     // Accessors
     public void setOpcode(int opcode){this.opcode = opcode;}
