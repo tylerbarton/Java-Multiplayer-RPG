@@ -8,6 +8,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import src.db.Database;
 import src.model.world.World;
 import src.net.ConnectionHandler;
 import src.util.logging.LogUtil;
@@ -25,6 +26,7 @@ public class Server implements Runnable {
     private boolean running = false;
     private long startTime;
     private World world;
+    private Database database;
     public final static Logger LOGGER;
 
     // Logger configuration
@@ -64,6 +66,8 @@ public class Server implements Runnable {
         startTime = System.currentTimeMillis();
         LOGGER.info("Started server.");
         this.initConnection();
+        database = new Database(this);
+        database.open();
     }
 
     /**
