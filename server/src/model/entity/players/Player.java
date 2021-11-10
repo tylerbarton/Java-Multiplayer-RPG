@@ -23,4 +23,12 @@ public class Player extends Creature {
     public void Logout(){
 
     }
+
+    /**
+     * @return the id in the database
+     */
+    public int getDbUuid(){
+        // TODO: How to generate this?
+        return -1;
+    }
 }
