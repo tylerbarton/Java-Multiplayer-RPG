@@ -35,7 +35,6 @@ public class Database {
     public void open(){
         try{
             String url = "jdbc:mysql://" + Config.DATABASE_HOST + '/' + Config.DATABASE_NAME + "?autoReconnect=true&useSSL=false&useTimezone=true&serverTimezone=UTC";
-            System.out.println(url);
             connection = DriverManager.getConnection(url, Config.DATABASE_USER, Config.DATABASE_PASS);
             statement = connection.createStatement();
             statement.setEscapeProcessing(true);
