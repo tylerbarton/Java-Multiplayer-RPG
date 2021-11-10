@@ -112,12 +112,32 @@ public class Database {
 
     /**
      * Loads a player from the database
-     * @param uuid the player id to get
+     * @param id the player id to get
      * @return A player object with loaded data
+     * ref: https://stackoverflow.com/questions/43539483/how-to-get-values-of-script-sql-to-an-object-java
      */
     public Player queryLoadPlayerDataById(int id){
         Player player;
         PlayerData playerData;
+
+        try {
+            PreparedStatement pstate = connection.prepareStatement(Queries.load_PlayerDataById);
+            pstate.setInt(1, id);
+            ResultSet results = pstate.executeQuery();
+            if(results.next()){
+                PlayerData data = new PlayerData();
+                data.uuid = results.getInt(1);
+                data.username = results.getString(2);
+                data.xLocation = results.getInt(3);
+                data.yLocation = results.getInt(4);
+                return(data.toPlayer());
+            } else {
+                LOGGER.warn("Unable to load player: id=" + id);
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         return null;
     }
