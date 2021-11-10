@@ -67,6 +67,25 @@ public class DatabaseTest {
     }
 
     /**
+     * Loads a player from a username alone
+     */
+    @Test
+    void getPlayerByUser() {
+        String username = "admin";
+
+        Database db = new Database(null);
+        db.open();
+
+        Player p = db.queryLoadPlayerDataByName(username);
+
+        assertEquals(p.username, "admin");
+        assertEquals(p.xPos, 100);
+        assertEquals(p.yPos, 100);
+
+        db.close();
+    }
+
+    /**
      * Tests that the database returns a null object for invalid player
      */
     @Test

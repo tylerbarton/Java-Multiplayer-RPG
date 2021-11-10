@@ -140,4 +140,31 @@ public class Database {
 
         return null;
     }
+
+
+    public Player queryLoadPlayerDataByName(String username){
+        Player player;
+        PlayerData playerData;
+
+        try {
+            PreparedStatement pstate = connection.prepareStatement(Queries.load_PlayerDataByUser);
+            pstate.setString(1, username);
+            ResultSet results = pstate.executeQuery();
+            if(results.next()){
+                PlayerData data = new PlayerData();
+                data.uuid = results.getInt(1);
+                data.username = results.getString(2);
+                data.xLocation = results.getInt(3);
+                data.yLocation = results.getInt(4);
+                return(data.toPlayer());
+            } else {
+                LOGGER.warn("Unable to load player: user=" + username);
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }
