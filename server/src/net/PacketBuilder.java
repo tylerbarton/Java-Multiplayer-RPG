@@ -9,14 +9,23 @@ import io.netty.buffer.Unpooled;
  */
 public class PacketBuilder {
     // Variables
+    private int length;
     private int opcode;
     private ByteBuf payload = Unpooled.buffer();
 
     public PacketBuilder(){ this(0); }
     public PacketBuilder(int opcode){this.opcode = opcode;}
 
+    /**
+     * @param bytes Packet bytes
+     */
+    public PacketBuilder(byte[] bytes, int length){
+        this.length = length;
+    }
+
     // Accessors
     public void setOpcode(int opcode){this.opcode = opcode;}
+    public int getLength(){return length;}
 
     // Methods
     /**
