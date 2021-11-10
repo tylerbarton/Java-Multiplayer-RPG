@@ -77,6 +77,12 @@ public class Server implements Runnable {
         this.run();
     }
 
+    /**
+     * Clean up server objects
+     */
+    public void stop(){
+        database.close();
+    }
 
     /**
      * Initialize the connection
@@ -128,5 +134,6 @@ public class Server implements Runnable {
                 LOGGER.catching(t);
             }
         }
+        stop();
     }
 }
