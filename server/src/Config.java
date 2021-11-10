@@ -9,8 +9,8 @@ public class Config {
     public final static int PORT = 10242;
 
     // DATABASE OPTIONS
-    public final static String DATABASE_HOST = "localhost:3306";
-    public final static String DATABASE_NAME = "ServerData";
+    public final static String DATABASE_HOST = "127.0.0.1:3306";
+    public final static String DATABASE_NAME = "serverdb";
     public final static String DATABASE_USER = "admin";
     public final static String DATABASE_PASS = "password";
 
