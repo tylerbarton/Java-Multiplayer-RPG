@@ -29,6 +29,10 @@ public class Server implements Runnable {
     private Database database;
     public final static Logger LOGGER;
 
+    public Database getDatabase(){return this.database;}
+    public void openDatabase(){database = new Database(this);
+        database.open();}
+
     // Logger configuration
     static {
         LogUtil.configure();
@@ -65,7 +69,12 @@ public class Server implements Runnable {
         // TODO: deserialize SQL state information
         startTime = System.currentTimeMillis();
         LOGGER.info("Started server.");
+        openDatabase();
         this.initConnection();
+    }
+
+    public void initPlugins(){
+        // Database
         database = new Database(this);
         database.open();
     }
