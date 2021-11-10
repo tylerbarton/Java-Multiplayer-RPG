@@ -31,4 +31,15 @@ public class Database {
         playerData.xLocation = player.xPos;
         playerData.yLocation = player.yPos;
     }
+
+    /**
+     * Loads a player from the database
+     * @param uuid the player id to get
+     * @return A player object with loaded data
+     */
+    public Player queryLoadPlayerData(int uuid){
+        // Check if uuid exists
+        // TODO: implement
+        return null;
+    }
 }
