@@ -17,10 +17,11 @@ public class GraphicsController extends DrawingArea {
         INTERFACE
     }
     public boolean active = true; // Changed when window focus changes to save pc power
-    public int[] pixelData; // Main pixel data that will be committed to the screen
+    private final int width;
     public int spriteCount = 0;
     public Sprite[] sprites;
-    private int width, height;
+    private final int height;
+    public int[] pixelData; // Main pixel data that will be committed to the screen in GameApplet
 
     public GraphicsController(int width, int height){
         this.width = width;
@@ -36,10 +37,15 @@ public class GraphicsController extends DrawingArea {
      */
     private void createTestScreen(){
         // Test
-        fill(0x00FFAAFF);
-        addSprite(new Sprite("amazon"), 263, 150);
-        addSprite(new Sprite("amazon"), 10, 10);
-        addSprite(new Sprite("black"), getCenterX(), getCenterY());
+        fill(0xFFFFAAFF);
+
+        addSprite(new Sprite("tile_2"), 10, 10);
+        addSprite(new Sprite("tile_1"), 263, 150);
+        //addSprite(new Sprite("tea"), 0, 0);
+
+        // addSprite(new Sprite("amazon"), 263, 150);
+        // addSprite(new Sprite("amazon"), 10, 10);
+        // addSprite(new Sprite("black"), getCenterX(), getCenterY());
     }
 
     /**
@@ -61,11 +67,12 @@ public class GraphicsController extends DrawingArea {
         spriteCount++;
         sprites[slot] = sprite;
 
-        // Drawing
+        // Sprite Information
         int sWidth = sprite.width;
         int sHeight = sprite.height;
         int[] pixels = sprite.getPixels();
 
+        // Drawing
         for (int y=0; y<sHeight; y++)
         {
             int yPix = y + yOffset;
@@ -74,13 +81,12 @@ public class GraphicsController extends DrawingArea {
                 int xPix = x + xOffset;
                 int value = pixels[x + (y * sWidth)];
 
-                // Ignore transparent values
-                if((value & 0xff000000) == 0){
-                    continue;
+                if((value&0xFF000000) != 0){
+                    // Out of range error handling
+                    if(xPix + (yPix * width) < width*height){
+                        this.pixelData[xPix + (yPix * width)] = (value);
+                    }
                 }
-
-                // Draw the pixel data to the buffer
-                this.pixelData[xPix + (yPix * width)] = value;
             }
         }
     }
