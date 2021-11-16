@@ -39,13 +39,8 @@ public class GraphicsController extends DrawingArea {
         // Test
         fill(0xFFFFAAFF);
 
-        addSprite(new Sprite("tile_2"), 10, 10);
-        addSprite(new Sprite("tile_1"), 263, 150);
-        //addSprite(new Sprite("tea"), 0, 0);
-
-        // addSprite(new Sprite("amazon"), 263, 150);
-        // addSprite(new Sprite("amazon"), 10, 10);
-        // addSprite(new Sprite("black"), getCenterX(), getCenterY());
+        addEntity(new Sprite("tile_2"), 10, 10);
+        addEntity(new Sprite("tile_1"), 263, 150);
     }
 
     /**
@@ -56,11 +51,8 @@ public class GraphicsController extends DrawingArea {
         Arrays.fill(this.pixelData, value);
     }
 
-    /**
-     * Adds a sprite to the
-     * @param sprite visual to add
-     */
-    public void addSprite(Sprite sprite, int xOffset, int yOffset){
+
+    public void addSprite(Sprite sprite, int xOffset, int yOffset, SPRITE_LAYER layer){
         // Book keeping
         int slot = nextSlot();
         if(slot == -1) return;
@@ -89,6 +81,20 @@ public class GraphicsController extends DrawingArea {
                 }
             }
         }
+    }
+
+    /**
+     * Adds a sprite to the entity layer
+     * @param sprite visual to add
+     */
+    public void addEntity(Sprite sprite, int xOffset, int yOffset){
+        sprite.interactable = true;
+        addSprite(sprite, xOffset, yOffset, SPRITE_LAYER.ENTITY);
+    }
+
+    public void addWorld(Sprite sprite, int xOffset, int yOffset){
+        sprite.interactable = false;
+        addSprite(sprite, xOffset, yOffset, SPRITE_LAYER.WORLDMAP);
     }
 
     /**

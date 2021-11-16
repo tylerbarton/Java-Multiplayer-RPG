@@ -20,6 +20,7 @@ import java.util.stream.Stream;
 public class Sprite extends DrawingArea{
     private static final String resPath = "\\client\\Images\\Tiles\\";
 
+    public boolean interactable = false;
     public String filePath;
     public int xPosition, yPosition;
     public int width, height;
