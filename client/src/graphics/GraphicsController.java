@@ -11,11 +11,6 @@ import static src.client.Config.MAX_SPRITES;
  * @author Tyler Barton
  */
 public class GraphicsController extends DrawingArea {
-    public enum SPRITE_LAYER {
-        WORLDMAP,
-        ENTITY,
-        INTERFACE
-    }
     private final int height;
     private final int width;
     public boolean active = true; // Changed when window focus changes to save pc power (wishful thinking haha)
@@ -47,7 +42,7 @@ public class GraphicsController extends DrawingArea {
 
         // Draws the player in the center of the screen
         // Hardcoded for speed right now
-        addSpriteTile(new Sprite("creature_player"), 25, 16, SPRITE_LAYER.ENTITY);
+        addSpriteTile(new Sprite("creature_player"), 25, 16, SpriteLayer.ENTITY);
     }
 
     /**
@@ -74,7 +69,7 @@ public class GraphicsController extends DrawingArea {
 
         for (int y = 0; y < yCount; y++) {
             for (int x = 0; x < xCount; x++) {
-                addSpriteTile(sprite, x, y, SPRITE_LAYER.WORLDMAP);
+                addSpriteTile(sprite, x, y, SpriteLayer.WORLD_MAP);
             }
         }
     }
@@ -85,13 +80,13 @@ public class GraphicsController extends DrawingArea {
      * @param x x tile
      * @param y y tile
      */
-    public void addSpriteTile(Sprite sprite, int x, int y, SPRITE_LAYER layer){
+    public void addSpriteTile(Sprite sprite, int x, int y, SpriteLayer layer){
         // Bound check
         if(x < 0 || y < 0) return;
         if(x > Config.CLIENT_WIDTH / Config.SPRITE_WIDTH ||
             y > Config.CLIENT_HEIGHT / Config.SPRITE_HEIGHT) return;
 
-        if(layer.equals(SPRITE_LAYER.ENTITY)){
+        if(layer.equals(SpriteLayer.ENTITY)){
             addEntity(sprite, x*sprite.width, y*sprite.height);
         } else {
             addWorld(sprite, x*sprite.width, y*sprite.height);
@@ -105,12 +100,13 @@ public class GraphicsController extends DrawingArea {
      * @param yOffset y screen position
      * @param layer determines interactable or not
      */
-    public void addSprite(Sprite sprite, int xOffset, int yOffset, SPRITE_LAYER layer){
+    public void addSprite(Sprite sprite, int xOffset, int yOffset, SpriteLayer layer){
         // Book keeping
         int slot = nextSlot();
         if(slot == -1) return;
         spriteCount++;
         sprites[slot] = sprite;
+        sprite.setLayer(layer);
 
         // Sprite Information
         int sWidth = sprite.width;
@@ -142,7 +138,7 @@ public class GraphicsController extends DrawingArea {
      */
     public void addEntity(Sprite sprite, int xOffset, int yOffset){
         sprite.interactable = true;
-        addSprite(sprite, xOffset, yOffset, SPRITE_LAYER.ENTITY);
+        addSprite(sprite, xOffset, yOffset, SpriteLayer.ENTITY);
     }
 
     /**
@@ -153,7 +149,7 @@ public class GraphicsController extends DrawingArea {
      */
     public void addWorld(Sprite sprite, int xOffset, int yOffset){
         sprite.interactable = false;
-        addSprite(sprite, xOffset, yOffset, SPRITE_LAYER.WORLDMAP);
+        addSprite(sprite, xOffset, yOffset, SpriteLayer.WORLD_MAP);
     }
 
     /**

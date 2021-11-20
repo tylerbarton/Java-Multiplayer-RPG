@@ -20,6 +20,7 @@ import java.util.stream.Stream;
 public class Sprite extends DrawingArea{
     private static final String resPath = "\\client\\Images\\Tiles\\";
 
+    private SpriteLayer layer;
     public boolean interactable = false;
     public String filePath;
     public int xPosition, yPosition;
@@ -150,7 +151,6 @@ public class Sprite extends DrawingArea{
         return null;
     }
 
-
     /**
      *
      * @param x
@@ -164,5 +164,19 @@ public class Sprite extends DrawingArea{
         int topY = this.yPosition+width;
         return !(x > topX || x < bottomX ||
                 y > topY || y < bottomY);
+    }
+
+    /**
+     * @param layer The layer to set this sprite as
+     */
+    public void setLayer(SpriteLayer layer){
+        this.layer = layer;
+    }
+
+    /**
+     * @return If a user's inputs can interact with this sprite directly.
+     */
+    public boolean isInteractable(){
+        return layer == SpriteLayer.ENTITY;
     }
 }
