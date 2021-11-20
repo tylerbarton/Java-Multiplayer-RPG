@@ -16,11 +16,11 @@ public class GraphicsController extends DrawingArea {
         ENTITY,
         INTERFACE
     }
-    public boolean active = true; // Changed when window focus changes to save pc power
+    private final int height;
     private final int width;
+    public boolean active = true; // Changed when window focus changes to save pc power (wishful thinking haha)
     public int spriteCount = 0;
     public Sprite[] sprites;
-    private final int height;
     public int[] pixelData; // Main pixel data that will be committed to the screen in GameApplet
 
     /**
@@ -34,27 +34,26 @@ public class GraphicsController extends DrawingArea {
         this.pixelData = new int[width * height];
         this.sprites = new Sprite[MAX_SPRITES];
 
-        createTestScreen();
+        initWorld();
+        //createTestScreen();
+    }
+
+    /**
+     * Draws the initial game screen
+     */
+    private void initWorld(){
+        // Set the background to grass
+        fill(new Sprite("tile_2"));
+
+        // Draws the player in the center of the screen
+        // Hardcoded for speed right now
+        addSpriteTile(new Sprite("creature_player"), 25, 16, SPRITE_LAYER.ENTITY);
     }
 
     /**
      * Method used for drawing test
      */
     private void createTestScreen(){
-        // Test
-        //fill(0xFFFFAAFF);
-
-        fill(new Sprite("tile_2"));
-
-//        addSpriteTile(new Sprite("tile_1"), 5, 5);
-//
-//        addSpriteTile(new Sprite("tile_1"), 5, 1);
-//        addSpriteTile(new Sprite("tile_1"), 3, 1);
-//        addSpriteTile(new Sprite("tile_1"), 1, 1);
-        addSpriteTile(new Sprite("tile_1"), 25, 25);
-
-        //addEntity(new Sprite("tile_2"), 10, 10);
-        //addEntity(new Sprite("tile_1"), 263, 150);
     }
 
     /**
@@ -73,11 +72,9 @@ public class GraphicsController extends DrawingArea {
         int xCount = this.width / sprite.width;
         int yCount = this.height / sprite.height;
 
-        System.out.println(xCount + "," + yCount);
-
         for (int y = 0; y < yCount; y++) {
             for (int x = 0; x < xCount; x++) {
-                addSpriteTile(sprite, x, y);
+                addSpriteTile(sprite, x, y, SPRITE_LAYER.WORLDMAP);
             }
         }
     }
@@ -88,8 +85,17 @@ public class GraphicsController extends DrawingArea {
      * @param x x tile
      * @param y y tile
      */
-    public void addSpriteTile(Sprite sprite, int x, int y){
-        addEntity(sprite, x*sprite.width, y*sprite.height);
+    public void addSpriteTile(Sprite sprite, int x, int y, SPRITE_LAYER layer){
+        // Bound check
+        if(x < 0 || y < 0) return;
+        if(x > Config.CLIENT_WIDTH / Config.SPRITE_WIDTH ||
+            y > Config.CLIENT_HEIGHT / Config.SPRITE_HEIGHT) return;
+
+        if(layer.equals(SPRITE_LAYER.ENTITY)){
+            addEntity(sprite, x*sprite.width, y*sprite.height);
+        } else {
+            addWorld(sprite, x*sprite.width, y*sprite.height);
+        }
     }
 
     /**
