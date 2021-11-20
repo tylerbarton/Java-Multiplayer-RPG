@@ -42,10 +42,19 @@ public class GraphicsController extends DrawingArea {
      */
     private void createTestScreen(){
         // Test
-        fill(0xFFFFAAFF);
+        //fill(0xFFFFAAFF);
 
-        addEntity(new Sprite("tile_2"), 10, 10);
-        addEntity(new Sprite("tile_1"), 263, 150);
+        fill(new Sprite("tile_2"));
+
+//        addSpriteTile(new Sprite("tile_1"), 5, 5);
+//
+//        addSpriteTile(new Sprite("tile_1"), 5, 1);
+//        addSpriteTile(new Sprite("tile_1"), 3, 1);
+//        addSpriteTile(new Sprite("tile_1"), 1, 1);
+        addSpriteTile(new Sprite("tile_1"), 25, 25);
+
+        //addEntity(new Sprite("tile_2"), 10, 10);
+        //addEntity(new Sprite("tile_1"), 263, 150);
     }
 
     /**
@@ -56,6 +65,32 @@ public class GraphicsController extends DrawingArea {
         Arrays.fill(this.pixelData, color);
     }
 
+    /**
+     * Fills the background with a repeating sprite
+     * @param sprite image
+     */
+    public void fill(Sprite sprite){
+        int xCount = this.width / sprite.width;
+        int yCount = this.height / sprite.height;
+
+        System.out.println(xCount + "," + yCount);
+
+        for (int y = 0; y < yCount; y++) {
+            for (int x = 0; x < xCount; x++) {
+                addSpriteTile(sprite, x, y);
+            }
+        }
+    }
+
+    /**
+     * Helper method to translate tile coordinate to local coordinates
+     * @param sprite image
+     * @param x x tile
+     * @param y y tile
+     */
+    public void addSpriteTile(Sprite sprite, int x, int y){
+        addEntity(sprite, x*sprite.width, y*sprite.height);
+    }
 
     /**
      * Draws a sprite's pixel data to the screen
