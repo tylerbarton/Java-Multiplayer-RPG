@@ -9,8 +9,10 @@ public class Config {
     public static final int CLIENT_WIDTH = 800;
     public static final int CLIENT_HEIGHT = 512;
 
-    // Graphical Performance
+    // Graphical & Performance
     public static final int MAX_SPRITES = 20000;
+    public static final int SPRITE_WIDTH = 16;
+    public static final int SPRITE_HEIGHT = 16;
 
     // Debug Options
     public static final boolean VERBOSE_MODE = true;
