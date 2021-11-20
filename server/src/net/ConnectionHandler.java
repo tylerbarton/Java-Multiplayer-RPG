@@ -135,11 +135,9 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
     @Override
     public void channelRead(final ChannelHandlerContext ctx, final Object message) {
         final Channel channel = ctx.channel();
-        System.out.println("In channel read");
         channel.attr(attachment).get().canSendSessionId.set(false);
 
         if (message instanceof Packet) {
-            System.out.println("Packet received");
             Packet packet = (Packet) message;
 
             if (packet.getOpcode() == 0) {
@@ -152,7 +150,6 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
                 channel.writeAndFlush(packet.getPayload());
             }
         } else {
-            //System.out.println("non-packet received");
             if (channel.isOpen() && channel.isWritable()) {
                 // Simple echo
                 //channel.writeAndFlush(message);
@@ -164,22 +161,6 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
                 //System.out.println("Channel cannot be written to");
             }
         }
-
-
-        //ctx.fireChannelRead("Received");
-//        if(channel.isActive()){
-//            channel.writeAndFlush(message);
-//        }
-
-//
-//        if(message instanceof Packet){
-//
-//            Packet packet = (Packet)message;
-//            ctx.fireChannelRead("Received");
-////            if (packet.getLength() > 10 || (packet.getID() == 4 && packet.getLength() > 8)) {
-////                loginHandler.processRequest(ctx.channel(), packet);
-////            }
-//        }
     }
 
     /**
@@ -199,7 +180,6 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
         t.start();
 
         ctx.fireChannelActive();
-        System.out.println("Done with channel active");
     }
 
     /**
