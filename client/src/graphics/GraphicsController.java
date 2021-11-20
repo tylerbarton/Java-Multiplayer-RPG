@@ -23,6 +23,11 @@ public class GraphicsController extends DrawingArea {
     private final int height;
     public int[] pixelData; // Main pixel data that will be committed to the screen in GameApplet
 
+    /**
+     * Constructor
+     * @param width Width of the screen
+     * @param height Height of the screen
+     */
     public GraphicsController(int width, int height){
         this.width = width;
         this.height = height;
@@ -45,13 +50,20 @@ public class GraphicsController extends DrawingArea {
 
     /**
      * Fills the screen with black. Use '0x00FFAAFF' for debugging
-     * @param value Value to be filled with.
+     * @param color Value to be filled with.
      */
-    public void fill(int value){
-        Arrays.fill(this.pixelData, value);
+    public void fill(int color){
+        Arrays.fill(this.pixelData, color);
     }
 
 
+    /**
+     * Draws a sprite's pixel data to the screen
+     * @param sprite The sprite to be drawn
+     * @param xOffset x screen position
+     * @param yOffset y screen position
+     * @param layer determines interactable or not
+     */
     public void addSprite(Sprite sprite, int xOffset, int yOffset, SPRITE_LAYER layer){
         // Book keeping
         int slot = nextSlot();
@@ -92,6 +104,12 @@ public class GraphicsController extends DrawingArea {
         addSprite(sprite, xOffset, yOffset, SPRITE_LAYER.ENTITY);
     }
 
+    /**
+     * Draws a sprite on the screen that cannot be interacted with.
+     * @param sprite Image to be drawn
+     * @param xOffset x position
+     * @param yOffset y position
+     */
     public void addWorld(Sprite sprite, int xOffset, int yOffset){
         sprite.interactable = false;
         addSprite(sprite, xOffset, yOffset, SPRITE_LAYER.WORLDMAP);
@@ -110,7 +128,6 @@ public class GraphicsController extends DrawingArea {
         return -1;
     }
 
-
     /**
      * Checks if a sprite is contained in this coordinate
      * @param x screen position
@@ -125,5 +142,4 @@ public class GraphicsController extends DrawingArea {
         }
         return null;
     }
-
 }
