@@ -73,12 +73,6 @@ public class Server implements Runnable {
         this.initConnection();
     }
 
-    public void initPlugins(){
-        // Database
-        database = new Database(this);
-        database.open();
-    }
-
     /**
      * Starts the server
      */
