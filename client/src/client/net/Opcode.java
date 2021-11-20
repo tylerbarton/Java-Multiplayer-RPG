@@ -10,8 +10,20 @@ public class Opcode {
      * Outgoing opcodes
      */
     public enum Out {
+        /**
+         * desc: Sent to login to the server with a username
+         * args: string username
+         */
         LOGIN(0),
+
+        /**
+         * desc: Pings the server to confirm connection
+         */
         PING(1),
+
+        /**
+         * desc: When connection is lost, tries to rejoin the server with the saved username
+         */
         RECONNECT(2),
         ;
 
@@ -42,8 +54,14 @@ public class Opcode {
      * Incoming opcodes
      */
     public enum In {
-        OPEN_CONNECTION_NOTIFY(3),  // Received on Login
-        CLOSE_CONNECTION_NOTIFY(4), // Logout
+        /**
+         * desc: Received from the server to confirm login
+         */
+        OPEN_CONNECTION_NOTIFY(3),
+        /**
+         * desc: Received from the server to confirm logout
+         */
+        CLOSE_CONNECTION_NOTIFY(4),
         ;
 
         private int opcode;
