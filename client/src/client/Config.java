@@ -4,6 +4,10 @@ package src.client;
  * Houses configurable options applicable to the entire client.
  */
 public class Config {
+    // Connection Configuration
+    public static final String HOST = "127.0.0.1";
+    public static final int HOST_PORT = 10242;
+
     // Client Window Configuration
     public static final String CLIENT_TITLE = "CS242 Final Project by Tyler Barton";
     public static final int CLIENT_WIDTH = 800;
