@@ -11,13 +11,12 @@ import java.util.LinkedList;
  * Represents a player object in the game world
  */
 public class Player extends Creature {
-    private final LinkedList<Packet> incomingPackets = new LinkedList<>();
-    private final ArrayList<Packet> outgoingPackets = new ArrayList<>();
     // General Information
     public String username;
     // Networking
     private Channel channel;
-
+    private final LinkedList<Packet> incomingPackets = new LinkedList<>();
+    private final ArrayList<Packet> outgoingPackets = new ArrayList<>();
 
     /**
      * Used to process a login attempt on this player
