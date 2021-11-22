@@ -2,13 +2,22 @@ package src.model.entity.players;
 
 import io.netty.channel.Channel;
 import src.model.entity.Creature;
+import src.net.Packet;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * Represents a player object in the game world
  */
 public class Player extends Creature {
-    private Channel channel;
+    private final LinkedList<Packet> incomingPackets = new LinkedList<>();
+    private final ArrayList<Packet> outgoingPackets = new ArrayList<>();
+    // General Information
     public String username;
+    // Networking
+    private Channel channel;
+
 
     /**
      * Used to process a login attempt on this player
