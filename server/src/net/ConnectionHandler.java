@@ -18,6 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import src.Config;
 import src.Server;
+import src.model.entity.players.Player;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -133,33 +134,32 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
      * @param message information received
      */
     @Override
-    public void channelRead(final ChannelHandlerContext ctx, final Object message) {
+    public void channelRead(final ChannelHandlerContext ctx, final Object message) throws IOException, ClassNotFoundException {
         final Channel channel = ctx.channel();
+
+        // Get the player associated with the session
         channel.attr(attachment).get().canSendSessionId.set(false);
+        Player player = null;
+        ConnectionAttachment att = channel.attr(attachment).get();
+        if (att != null) {
+            player = att.player.get();
+        }
 
-        if (message instanceof Packet) {
-            Packet packet = (Packet) message;
+        // Parse the packet
+        if(message instanceof Packet){
+            Packet packet = (Packet)message;
 
-            if (packet.getOpcode() == 0) {
-                System.out.println("Login packet received");
+            System.out.println("Packet successfully read");
+
+            if(player != null){
+                // TODO: assign packet to a player
+                // player.
             } else {
-                System.out.println("Not login packet");
-            }
-
-            if (channel.isOpen() && channel.isWritable()) {
-                channel.writeAndFlush(packet.getPayload());
+                // if player is null, it MUST be a login packet
             }
         } else {
-            if (channel.isOpen() && channel.isWritable()) {
-                // Simple echo
-                //channel.writeAndFlush(message);
-
-                // Login Request
-                LoginRequest request = new LoginRequest(ctx.channel(),(String)message);
-
-            } else {
-                //System.out.println("Channel cannot be written to");
-            }
+            // Invalid packet - for security we'll send nothing back
+            System.out.println("Server: Non-packet read: " + message.toString());
         }
     }
 
@@ -173,10 +173,11 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
         addConnection(hostAddress, ctx.channel());
 
         // Add a timeout to the client channel
-        ctx.channel().pipeline().addLast(new ReadTimeoutHandler(30));
+        ctx.channel().pipeline().addLast(new ReadTimeoutHandler(Config.PACKET_TIMEOUT_SEC));
 
+        // Send session to the client
         ctx.channel().attr(attachment).get().canSendSessionId.set(true);
-        Thread t = new Thread(new SessionIdSender(ctx));
+        Thread t = new Thread(new SessionIdHandler(ctx));
         t.start();
 
         ctx.fireChannelActive();
@@ -201,17 +202,17 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
      */
     @Override
     public void exceptionCaught(final ChannelHandlerContext ctx, final Throwable e) {
-            final Channel channel = ctx.channel();
-            final ConnectionAttachment att = channel.attr(attachment).get();
+        final Channel channel = ctx.channel();
+        final ConnectionAttachment att = channel.attr(attachment).get();
 
-            // Log the error
-            if(NETWORK_CONNECTION_RESET_EXCEPTIONS.stream().noneMatch($it -> Objects.equal($it, e.getMessage()))) {
-                LOGGER.error("Exception caught in Network I/O : Remote address " + channel.remoteAddress() + " : isOpen " + channel.isOpen() + " : isActive " + channel.isActive() + " : isWritable " + channel.isWritable() + (att == null ? "" : " : Attached Player " + att.player.get()));
-            } else {
-                LOGGER.info(e.getMessage() + " : Remote address " + channel.remoteAddress() + (att == null ? "" : " : Attached Player " + att.player.get()));
-            }
+        // Log the error
+        if(NETWORK_CONNECTION_RESET_EXCEPTIONS.stream().noneMatch($it -> Objects.equal($it, e.getMessage()))) {
+            LOGGER.error("Exception caught in Network I/O : Remote address " + channel.remoteAddress() + " : isOpen " + channel.isOpen() + " : isActive " + channel.isActive() + " : isWritable " + channel.isWritable() + (att == null ? "" : " : Attached Player " + att.player.get()));
+        } else {
+            LOGGER.info(e.getMessage() + " : Remote address " + channel.remoteAddress() + (att == null ? "" : " : Attached Player " + att.player.get()));
+        }
 
-            // Close the channel
+        // Close the channel
         if (ctx.channel().isActive()){
             ctx.channel().close();
         }
