@@ -63,12 +63,11 @@ public class PacketBuffer {
      */
     public final int readInt() {
         try {
-            this.length += 4;
-
-            return (this.dataBuffer[this.length - 3] << 16 & 16711680)
-                    + (this.dataBuffer[this.length - 4] << 24 & -16777216)
-                    + (0xFF00 & this.dataBuffer[this.length - 2] << 8)
-                    + (this.dataBuffer[this.length - 1] & 255);
+            //this.length += 4;
+            return ((this.dataBuffer[this.length - 4] << 24) +
+                    (this.dataBuffer[this.length - 3] << 16) +
+                    (this.dataBuffer[this.length - 2] << 8) +
+                    (this.dataBuffer[this.length - 1]));
         } catch (RuntimeException ignored) {}
         return -1;
     }
