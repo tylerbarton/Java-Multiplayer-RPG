@@ -1,0 +1,47 @@
+Resources for this project accredited below
+
+
+# Client
+## Assets
+1. "Kenney.nl" or "www.kenney.nl" for sprite sheet
+
+## Functionality
+1. https://github.com/Open-RSC/Core-Framework/tree/a85089c2f1bbc74a6015e03d135b8a926044a521/Client_Base/src/orsc
+2. https://github.com/Open-RSC/Core-Framework/blob/6efbe2679462ef76ec617a4f175fdc10c177beb3/PC_Client/src/orsc/OpenRSC.java
+
+## Graphics
+1. https://www.youtube.com/watch?v=844Q40XXKXc 'Java Game Programming - Creating a Tile Grid'
+
+## Misc
+1. Tyler Barton, cs242-fa21-assignment-1.0
+
+# Server
+## Entities
+1. https://github.com/tmewett/BrogueCE/blob/master/src/brogue/Monsters.c
+
+## Database
+1. https://stackoverflow.com/questions/55627787/checking-connection-to-mysql-java
+2. https://stackoverflow.com/questions/717436/create-mysql-database-from-java
+3. https://www.virtual-dba.com/blog/sql-server-services/
+4. https://stackoverflow.com/questions/50379839/connection-java-mysql-public-key-retrieval-is-not-allowed # In the event of "public key retrival" try to connect to database via right hand panel
+
+## Networking
+1. https://www.baeldung.com/a-guide-to-java-sockets
+2. https://dev.to/leading-edje/java-nio-and-netty-4o5
+3. https://netty.io/wiki/user-guide-for-4.x.html
+4. https://stackoverflow.com/questions/26997569/whats-the-sequence-of-channelhandler-in-netty
+5. https://stackoverflow.com/questions/25932352/using-channel-attributes-in-different-context-handlers
+6. https://www.baeldung.com/java-replace-if-statements
+    PROVIDED BY CS 242! :)
+7. https://stackoverflow.com/questions/25256975/looking-for-substitutes-for-some-functionality-while-moving-from-netty-3-x-to-4
+
+### Message Queue
+8. https://docs.oracle.com/cd/E19435-01/819-0069/intro.html
+9. https://javaee.github.io/glassfish/doc/4.0/mq-dev-guide-java.pdf
+
+## Logging
+1. http://logging.apache.org/log4j/2.x/manual/layouts.html
+2. http://logging.apache.org/log4j/2.x/manual/configuration.html
+3. https://stackoverflow.com/questions/21979699/log4j-2-adding-multiple-colors-to-console-appender
+4. https://java.hotexamples.com/examples/org.apache.cxf.common.logging/LogUtils/getLogger/java-logutils-getlogger-method-examples.html
+5. https://www.programcreek.com/java-api-examples/?class=org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder&method=add
