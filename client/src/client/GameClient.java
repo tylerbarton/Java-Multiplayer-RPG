@@ -28,7 +28,7 @@ public class GameClient implements Runnable {
     public long lastFPSUpdate;
 
     // Networking components
-    public PacketHandler packetHandler;
+    public static PacketHandler packetHandler;
 
     /**
      * @return The graphics handler for the game
@@ -65,7 +65,7 @@ public class GameClient implements Runnable {
 
         // Send a movement packet
         try {
-            new MovementPacket(applet.packetHandler.getSocket(), x, y).send();
+            new MovementPacket(GameClient.packetHandler.getSocket(), world.x, world.y).send();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -87,7 +87,7 @@ public class GameClient implements Runnable {
         try {
             this.packetHandler = new PacketHandler(Config.HOST, Config.HOST_PORT);
             packetHandler.openSocket();
-            new LoginPacket(packetHandler.getSocket(), "username").send();
+            new LoginPacket(packetHandler.getSocket(), Config.USERNAME).send();
             System.out.println("Connection established");
         } catch (IOException e) {
             e.printStackTrace();

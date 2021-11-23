@@ -4,7 +4,8 @@ package src.client;
  * Houses configurable options applicable to the entire client.
  */
 public class Config {
-    // Connection Configuration
+    // Server Connection
+    public static final String USERNAME = "Admin";
     public static final String HOST = "127.0.0.1";
     public static final int HOST_PORT = 10242;
 
@@ -19,6 +20,6 @@ public class Config {
     public static final int SPRITE_HEIGHT = 16;
 
     // Debug Options
-    public static final boolean VERBOSE_MODE = true;
+    public static final boolean VERBOSE_MODE = false;
     public static final boolean DRAW_FPS = true;
 }
