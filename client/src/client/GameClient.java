@@ -5,6 +5,8 @@ import src.client.net.impl.LoginPacket;
 import src.client.net.impl.MovementPacket;
 import src.graphics.GraphicsController;
 import src.world.Coord;
+import src.world.Entity;
+import src.world.EntityHandler;
 import src.world.WorldMap;
 
 import java.awt.event.KeyEvent;
@@ -18,6 +20,7 @@ import java.io.IOException;
 public class GameClient implements Runnable {
     // Game manager
     public int gameState = 0; // 0 - loading, 1-login, 2-game
+    public static WorldMap worldMap;
 
     // Graphical Components
     GameApplet applet;
@@ -43,9 +46,18 @@ public class GameClient implements Runnable {
      */
     public GameClient(GameApplet gameApplet) {
         this.applet = gameApplet;
+
         GameClient.graphic = new GraphicsController(gameApplet.width, gameApplet.height);
+        initWorldMap();
     }
     private boolean shift = false;
+
+    /**
+     * Initializes the local version of the world map
+     */
+    private void initWorldMap(){
+        worldMap = new WorldMap(0, 0);
+    }
 
     /**
      * Handles the clients main loop
@@ -64,6 +76,9 @@ public class GameClient implements Runnable {
         Coord world = WorldMap.ScreenToWorldCoord(x, y);
 
         // Send a movement packet
+        EntityHandler.player.xPosition = x;
+        EntityHandler.player.yPosition = y;
+        EntityHandler.changed = true;
         try {
             new MovementPacket(GameClient.packetHandler.getSocket(), world.x, world.y).send();
         } catch (IOException ex) {
@@ -123,6 +138,10 @@ public class GameClient implements Runnable {
         currentFPS++;
         long time = System.currentTimeMillis();
         if (time - lastFPSUpdate >= 1000) {
+            // Update the entities - could move this to main game loop
+            drawGameWorld();
+
+            // Draw the screen
             applet.draw();
             lastFPSUpdate = time;
             GameClient.FPS = currentFPS;
@@ -148,6 +167,12 @@ public class GameClient implements Runnable {
      * Draws the game world to the screen
      */
     private void drawGameWorld() {
-        System.out.println("Drawing Game World");
+        if(worldMap.needsUpdate()){
+            System.out.println("Redrawing entities");
+            for(Entity e : worldMap.getEntityHandler().entities.values()){
+                GameClient.graphic.addEntity(e.sprite, e.xPosition, e.yPosition);
+            }
+            worldMap.getEntityHandler().changed = false;
+        }
     }
 }

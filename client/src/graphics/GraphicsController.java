@@ -39,10 +39,6 @@ public class GraphicsController extends DrawingArea {
     private void initWorld(){
         // Set the background to grass
         fill(new Sprite("tile_2"));
-
-        // Draws the player in the center of the screen
-        // Hardcoded for speed right now
-        addSpriteTile(new Sprite("creature_player"), 25, 16, SpriteLayer.ENTITY);
     }
 
     /**
@@ -94,20 +90,12 @@ public class GraphicsController extends DrawingArea {
     }
 
     /**
-     * Draws a sprite's pixel data to the screen
-     * @param sprite The sprite to be drawn
-     * @param xOffset x screen position
-     * @param yOffset y screen position
-     * @param layer determines interactable or not
+     * Draw a sprite's pixels on the screen
+     * @param sprite Image to extract pixel data from
+     * @param xOffset x
+     * @param yOffset y
      */
-    public void addSprite(Sprite sprite, int xOffset, int yOffset, SpriteLayer layer){
-        // Book keeping
-        int slot = nextSlot();
-        if(slot == -1) return;
-        spriteCount++;
-        sprites[slot] = sprite;
-        sprite.setLayer(layer);
-
+    private void drawSprite(Sprite sprite, int xOffset, int yOffset){
         // Sprite Information
         int sWidth = sprite.width;
         int sHeight = sprite.height;
@@ -130,6 +118,37 @@ public class GraphicsController extends DrawingArea {
                 }
             }
         }
+    }
+
+    /**
+     * Refreshes the entire screen of sprites
+     */
+    public void redrawAllSprites(){
+        for (int i = 0; i < spriteCount; i++) {
+            Sprite s = sprites[i];
+            drawSprite(s, s.xPosition, s.yPosition);
+        }
+    }
+
+    /**
+     * Draws a sprite's pixel data to the screen
+     * @param sprite The sprite to be drawn
+     * @param xOffset x screen position
+     * @param yOffset y screen position
+     * @param layer determines interactable or not
+     */
+    public void addSprite(Sprite sprite, int xOffset, int yOffset, SpriteLayer layer){
+        // Book keeping
+        int slot = nextSlot();
+        if(slot == -1) return;
+        spriteCount++;
+        sprites[slot] = sprite;
+        sprite.xPosition = xOffset;
+        sprite.yPosition = yOffset;
+        sprite.setLayer(layer);
+
+        // Draw the sprite we just added
+        drawSprite(sprite, xOffset, yOffset);
     }
 
     /**
