@@ -34,7 +34,7 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
     public static final AttributeKey<ConnectionAttachment> attachment = AttributeKey.valueOf("conn-attachment");
     private static final Logger LOGGER = LogManager.getLogger();
     final ChannelGroup channels;
-    private final Server server;
+    public static Server server;
     private final HashMap<String, ArrayList<Channel>> connections;
     private final LoginHandler loginHandler;
     public ImmutableList<String> NETWORK_CONNECTION_RESET_EXCEPTIONS =
@@ -80,7 +80,7 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
                         // Add handlers here
                         // Impl note: Could add checksum, decoder, encoders, etc.
                         pipeline.addLast("decoder", new ConnectionDecoder());
-                        pipeline.addLast("handler", new ConnectionHandler(null));
+                        pipeline.addLast("handler", new ConnectionHandler(ConnectionHandler.server));
                     }
                 }
         );
