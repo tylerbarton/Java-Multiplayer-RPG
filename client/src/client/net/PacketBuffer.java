@@ -63,7 +63,7 @@ public class PacketBuffer {
      */
     public final int readInt() {
         try {
-            //this.length += 4;
+            this.length += 4;
             return ((this.dataBuffer[this.length - 4] << 24) +
                     (this.dataBuffer[this.length - 3] << 16) +
                     (this.dataBuffer[this.length - 2] << 8) +
