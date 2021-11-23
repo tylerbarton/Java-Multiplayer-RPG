@@ -34,13 +34,12 @@ public class PacketHandler {
      * @return A socket with the connection to the server
      */
     public final void openSocket() throws IOException {
-        Socket s = new Socket(InetAddress.getByName(host), port);
-        s.setSoTimeout(20000);
-        s.setTcpNoDelay(true);
+        socket = new Socket(InetAddress.getByName(host), port);
+        socket.setSoTimeout(20000);
+        socket.setTcpNoDelay(true);
 
-        socket = s;
-        instream = s.getInputStream();
-        outstream = s.getOutputStream();
+        instream = socket.getInputStream();
+        outstream = socket.getOutputStream();
     }
 
     /**
