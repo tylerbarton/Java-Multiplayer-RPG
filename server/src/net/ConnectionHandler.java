@@ -86,7 +86,6 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
         );
         // Set channel options
         bootstrap.childOption(ChannelOption.TCP_NODELAY, true);
-        bootstrap.childOption(ChannelOption.SO_TIMEOUT, 20000);
         bootstrap.childOption(ChannelOption.SO_KEEPALIVE, false);
         bootstrap.childOption(ChannelOption.SO_SNDBUF, 1024);
         bootstrap.childOption(ChannelOption.SO_RCVBUF, 1024);
