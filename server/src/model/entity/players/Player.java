@@ -1,6 +1,8 @@
 package src.model.entity.players;
 
 import io.netty.channel.Channel;
+import src.client.net.Opcode;
+import src.client.net.PacketBuffer;
 import src.model.entity.Creature;
 import src.net.Packet;
 
@@ -13,10 +15,11 @@ import java.util.LinkedList;
 public class Player extends Creature {
     // General Information
     public String username;
+
     // Networking
     private Channel channel;
-    private final LinkedList<Packet> incomingPackets = new LinkedList<>();
-    private final ArrayList<Packet> outgoingPackets = new ArrayList<>();
+    public final LinkedList<Packet> incomingPackets = new LinkedList<>();
+    public final ArrayList<Packet> outgoingPackets = new ArrayList<>();
 
     /**
      * Used to process a login attempt on this player
@@ -46,5 +49,20 @@ public class Player extends Creature {
      */
     public void addPacket(Packet packet){
         incomingPackets.add(packet);
+        processPackets();
+    }
+
+    public void processPackets(){
+        Packet p;
+        while( (p=incomingPackets.poll()) != null){
+            int op = p.getOpcode();
+            if(op == Opcode.Out.MOVEMENT.getOpcode()){
+                PacketBuffer buffer = new PacketBuffer(p.getPayload().array());
+                xPos = buffer.readInt();
+                yPos = buffer.readInt();
+                System.out.println("Updated player position to: " + xPos + "," + yPos);
+            }
+
+        }
     }
 }
