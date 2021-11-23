@@ -39,4 +39,12 @@ public class Player extends Creature {
         // TODO: How to generate this?
         return -1;
     }
+
+    /**
+     * Adds a received packet to this player model to be processed later
+     * @param packet
+     */
+    public void addPacket(Packet packet){
+        incomingPackets.add(packet);
+    }
 }
