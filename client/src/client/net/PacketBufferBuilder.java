@@ -5,11 +5,11 @@ package src.client.net;
  * @implNote Length and opcode are handled outside this class.
  * @author Tyler Barton
  */
-public class PacketBuffer {
+public class PacketBufferBuilder {
     public byte[] dataBuffer;   // buffer
     public int length;       // length
 
-    public PacketBuffer(int size){
+    public PacketBufferBuilder(int size){
         dataBuffer = new byte[size];
     }
 
