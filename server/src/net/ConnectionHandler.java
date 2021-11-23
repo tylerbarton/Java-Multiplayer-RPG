@@ -18,6 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import src.Config;
 import src.Server;
+import src.client.net.PacketBuffer;
 import src.model.entity.players.Player;
 
 import java.io.IOException;
@@ -78,11 +79,11 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
                         final ChannelPipeline pipeline = channel.pipeline();
                         // Add handlers here
                         // Impl note: Could add checksum, decoder, encoders, etc.
+                        pipeline.addLast("decoder", new ConnectionDecoder());
                         pipeline.addLast("handler", new ConnectionHandler(null));
                     }
                 }
         );
-
         // Set channel options
         bootstrap.childOption(ChannelOption.TCP_NODELAY, true);
         bootstrap.childOption(ChannelOption.SO_TIMEOUT, 20000);
@@ -148,8 +149,10 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
         // Parse the packet
         if(message instanceof Packet){
             Packet packet = (Packet)message;
+            Packet.printPacket(packet, "server");
 
-            System.out.println("Packet successfully read");
+            PacketBuffer buffer = new PacketBuffer(packet.getPayload().array());
+            System.out.println(buffer.readString());
 
             if(player != null){
                 // TODO: assign packet to a player
