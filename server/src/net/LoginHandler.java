@@ -26,8 +26,7 @@ public class LoginHandler implements Runnable {
     public LoginHandler(Server server){
         this.server = server;
         //this.db = server.getDatabase();
-        this.db = new Database(this.server);
-        this.db.open();
+        this.db = server.getDatabase();
         requests = new ConcurrentLinkedQueue<>();
     }
 
