@@ -1,5 +1,6 @@
 package src.client;
 
+import src.client.net.PacketHandler;
 import src.graphics.DrawingArea;
 
 import javax.swing.*;
@@ -17,7 +18,7 @@ public class GameApplet extends Applet implements MouseListener, MouseMotionList
 
     GameClient client;
     Thread clientThread = null;
-    // TODO: Packet handler
+    PacketHandler packetHandler;
 
     // Mouse variables
     public int vk_key = KeyEvent.VK_A;
@@ -121,11 +122,12 @@ public class GameApplet extends Applet implements MouseListener, MouseMotionList
     }
 
     /**
-     * Called from the game client when an update is requested
+     * Called from the game client when an update is requested.
+     * Redraws the screen image
      */
     public final void draw(){
         Graphics g = getGraphics();
-        draw(g, 0, 0); // TODO: set offset?
+        draw(g, 0, 0);
         if(Config.DRAW_FPS){
             drawFps(g);
         }
@@ -157,16 +159,13 @@ public class GameApplet extends Applet implements MouseListener, MouseMotionList
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if(Config.VERBOSE_MODE){
-            System.out.println("Key Pressed:" + e.getKeyChar());
-        }
         vk_key = e.getKeyCode();
         client.handleKeyPressed(e);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-
+        client.handleKeyReleased(e);
     }
 
     @Override
