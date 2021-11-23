@@ -22,8 +22,10 @@ public class Server implements Runnable {
     public final static Logger LOGGER;
 
     public Database getDatabase(){return this.database;}
-    public void openDatabase(){database = new Database(this);
-        database.open();}
+    public void openDatabase(){
+        database = new Database(this);
+        database.open();
+    }
 
     // Logger configuration
     static {
