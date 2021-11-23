@@ -25,6 +25,11 @@ public class Opcode {
          * desc: When connection is lost, tries to rejoin the server with the saved username
          */
         RECONNECT(2),
+
+        /**
+         * desc: When a user selects a non-entity containing tile, moves the user's entity
+         */
+        MOVEMENT(3),
         ;
 
         private int opcode;
