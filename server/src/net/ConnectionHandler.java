@@ -150,14 +150,17 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
             Packet packet = (Packet)message;
             Packet.printPacket(packet, "server");
 
-            PacketBuffer buffer = new PacketBuffer(packet.getPayload().array());
-            System.out.println(buffer.readString());
+
 
             if(player != null){
                 // TODO: assign packet to a player
-                // player.
+                //player.
             } else {
                 // if player is null, it MUST be a login packet
+                PacketBuffer buffer = new PacketBuffer(packet.getPayload().array());
+                String username = buffer.readString();
+                LoginRequest request = new LoginRequest(channel, username);
+                loginHandler.processRequest(request);
             }
         } else {
             // Invalid packet - for security we'll send nothing back
