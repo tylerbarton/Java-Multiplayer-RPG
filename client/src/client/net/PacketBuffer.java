@@ -1,16 +1,28 @@
 package src.client.net;
 
 /**
- * Builds a payload as a byte array to best transmitted to the server.
+ * Interprets a payload as a byte array to be written to & read from
  * @implNote Length and opcode are handled outside this class.
  * @author Tyler Barton
  */
-public class PacketBufferBuilder {
+public class PacketBuffer {
     public byte[] dataBuffer;   // buffer
-    public int length;       // length
+    public int length;          // length
 
-    public PacketBufferBuilder(int size){
+    /**
+     * Used on packet creation
+     * @param size
+     */
+    public PacketBuffer(int size){
         dataBuffer = new byte[size];
+    }
+
+    /**
+     * Used on packet retrieval
+     * @param data
+     */
+    public PacketBuffer(byte[] data){
+        this.dataBuffer = data.clone();
     }
 
     /**
