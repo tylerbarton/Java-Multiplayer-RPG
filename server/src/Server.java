@@ -1,21 +1,11 @@
 package src;
 
-import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import src.db.Database;
 import src.model.world.World;
 import src.net.ConnectionHandler;
 import src.util.logging.LogUtil;
-
-import java.net.InetSocketAddress;
-
-import static org.apache.logging.log4j.util.Unbox.box;
 
 /**
  * Main server controller
@@ -25,6 +15,8 @@ import static org.apache.logging.log4j.util.Unbox.box;
 public class Server implements Runnable {
     private boolean running = false;
     private long startTime;
+    private Thread connectionThread;
+    private ConnectionHandler connection;
     private World world;
     private Database database;
     public final static Logger LOGGER;
@@ -91,31 +83,9 @@ public class Server implements Runnable {
      * Initialize the connection
      */
     private void initConnection(){
-        EventLoopGroup bossGroup = new NioEventLoopGroup(0);
-        EventLoopGroup workerGroup = new NioEventLoopGroup(0);
-        final ServerBootstrap bootstrap = new ServerBootstrap();
-        bootstrap.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).childHandler(
-                new ChannelInitializer<SocketChannel>() {
-                    @Override
-                    protected void initChannel(final SocketChannel channel) {
-                        final ChannelPipeline pipeline = channel.pipeline();
-                        channel.pipeline().addLast("readTimeoutHandler", new ReadTimeoutHandler(30));
-                        pipeline.addLast("handler", new ConnectionHandler(null));
-                    }
-                }
-        );
-
-        bootstrap.childOption(ChannelOption.TCP_NODELAY, true);
-        bootstrap.childOption(ChannelOption.SO_KEEPALIVE, false);
-        bootstrap.childOption(ChannelOption.SO_RCVBUF, 10000);
-        bootstrap.childOption(ChannelOption.SO_SNDBUF, 10000);
-
-        try {
-            ChannelFuture serverChannel = bootstrap.bind(new InetSocketAddress(Config.PORT)).sync();
-            LOGGER.info("Game world is now online on port {}!", box(Config.PORT));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        connection = new ConnectionHandler(this);
+        connectionThread = new Thread(connection);
+        connectionThread.start();
     }
 
     /**
