@@ -21,6 +21,8 @@ public abstract class PacketType{
     public PacketType(int opcode, Socket socket){
         this.opcode = opcode;
         this.socket = socket;
+
+        // Create a base buffer and write the opcode
         this.buffer = new PacketBuffer(1024);
         this.buffer.length = buffer.length + 2;       // Buffer 2 bytes for length
         this.buffer.writeByte(opcode);                // Write Opcode (1)
@@ -40,9 +42,9 @@ public abstract class PacketType{
     /**
      * Sends the packet to the server - make sure to include 'length' header
      */
-    protected void send() throws IOException {
+    public void send() throws IOException {
         this.finishPacket();
-        socket.getOutputStream().write(buffer.dataBuffer, 0, buffer.length);
-        socket.getOutputStream().flush();
+        this.socket.getOutputStream().write(buffer.dataBuffer, 0, buffer.length);
+        this.socket.getOutputStream().flush();
     }
 }
