@@ -148,10 +148,9 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
         // Parse the packet
         if(message instanceof Packet){
             Packet packet = (Packet)message;
-            Packet.printPacket(packet, "server");
-
+            // Packet.printPacket(packet, "server");
             if(player != null){
-                System.out.println("Assigned to player");
+                // Assign a player's packets to their model
                 player.addPacket(packet);
             } else {
                 // if player is null, it MUST be a login packet
