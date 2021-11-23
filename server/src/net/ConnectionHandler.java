@@ -46,7 +46,7 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
      */
     public ConnectionHandler(Server server){
         super();
-        this.server = server;
+        ConnectionHandler.server = server;
         this.loginHandler = new LoginHandler(server);
         this.connections = new HashMap<>();
         this.channels = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
@@ -86,7 +86,7 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
         );
         // Set channel options
         bootstrap.childOption(ChannelOption.TCP_NODELAY, true);
-        bootstrap.childOption(ChannelOption.SO_KEEPALIVE, false);
+        bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
         bootstrap.childOption(ChannelOption.SO_SNDBUF, 1024);
         bootstrap.childOption(ChannelOption.SO_RCVBUF, 1024);
 
@@ -148,16 +148,20 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
         // Parse the packet
         if(message instanceof Packet){
             Packet packet = (Packet)message;
-            // Packet.printPacket(packet, "server");
             if(player != null){
                 // Assign a player's packets to their model
+                System.out.println("Adding packet to player: " + player.username + ", " + packet.getOpcode());
                 player.addPacket(packet);
             } else {
                 // if player is null, it MUST be a login packet
                 PacketBuffer buffer = new PacketBuffer(packet.getPayload().array());
                 String username = buffer.readString();
                 LoginRequest request = new LoginRequest(channel, username);
-                att.player.set(loginHandler.processRequest(request));
+                Player p = loginHandler.processRequest(request);
+
+                // Start managing the player
+                ConnectionHandler.server.getWorld().addPlayer(p);
+                att.player.set(p);
             }
         } else {
             // Invalid packet - for security we'll send nothing back
