@@ -34,7 +34,7 @@ public class LoginHandler implements Runnable {
      * Processes the login request
      * @param request Generated login request
      */
-    public void processRequest(final LoginRequest request){
+    public Player processRequest(final LoginRequest request){
         String username = request.username;
         Player p = db.queryLoadPlayerDataByName(username);
         if(p != null){
@@ -48,7 +48,7 @@ public class LoginHandler implements Runnable {
             p.yPos = 0;
             db.querySavePlayerData(p);
         }
-        // TODO: Import into server player handler
+        return p;
     }
 
     /**

@@ -150,17 +150,15 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
             Packet packet = (Packet)message;
             Packet.printPacket(packet, "server");
 
-
-
             if(player != null){
-                // TODO: assign packet to a player
-                //player.
+                System.out.println("Assigned to player");
+                player.addPacket(packet);
             } else {
                 // if player is null, it MUST be a login packet
                 PacketBuffer buffer = new PacketBuffer(packet.getPayload().array());
                 String username = buffer.readString();
                 LoginRequest request = new LoginRequest(channel, username);
-                loginHandler.processRequest(request);
+                att.player.set(loginHandler.processRequest(request));
             }
         } else {
             // Invalid packet - for security we'll send nothing back
@@ -213,6 +211,8 @@ public class ConnectionHandler extends ChannelInboundHandlerAdapter implements R
         // Log the error
         if(NETWORK_CONNECTION_RESET_EXCEPTIONS.stream().noneMatch($it -> Objects.equal($it, e.getMessage()))) {
             LOGGER.error("Exception caught in Network I/O : Remote address " + channel.remoteAddress() + " : isOpen " + channel.isOpen() + " : isActive " + channel.isActive() + " : isWritable " + channel.isWritable() + (att == null ? "" : " : Attached Player " + att.player.get()));
+            LOGGER.error(e.getMessage());
+            e.printStackTrace();
         } else {
             LOGGER.info(e.getMessage() + " : Remote address " + channel.remoteAddress() + (att == null ? "" : " : Attached Player " + att.player.get()));
         }
