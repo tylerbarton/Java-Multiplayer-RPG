@@ -1,6 +1,8 @@
 package src.client;
 
 import src.client.net.PacketHandler;
+import src.client.net.impl.LoginPacket;
+import src.client.net.impl.MovementPacket;
 import src.graphics.GraphicsController;
 import src.world.Coord;
 import src.world.WorldMap;
@@ -78,7 +80,7 @@ public class GameClient implements Runnable {
         try {
             this.packetHandler = new PacketHandler(Config.HOST, Config.HOST_PORT);
             packetHandler.openSocket();
-            // TODO: Login
+            new LoginPacket(packetHandler.getSocket(), "username").send();
             System.out.println("Connection established");
         } catch (IOException e) {
             e.printStackTrace();
