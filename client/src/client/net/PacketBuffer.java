@@ -7,7 +7,7 @@ package src.client.net;
  */
 public class PacketBuffer {
     public byte[] dataBuffer;   // buffer
-    public int packetEnd;       // length
+    public int length;       // length
 
     public PacketBuffer(int size){
         dataBuffer = new byte[size];
@@ -19,7 +19,7 @@ public class PacketBuffer {
      */
     public final void writeByte(int val) {
         try {
-            this.dataBuffer[this.packetEnd++] = (byte) val;
+            this.dataBuffer[this.length++] = (byte) val;
 
         } catch (RuntimeException ignored) {}
     }
@@ -29,8 +29,8 @@ public class PacketBuffer {
      * @param val value
      */
     public void writeShort(short val){
-        this.dataBuffer[this.packetEnd++] = (byte)(val >> 8);
-        this.dataBuffer[this.packetEnd++] = (byte) val;
+        this.dataBuffer[this.length++] = (byte)(val >> 8);
+        this.dataBuffer[this.length++] = (byte) val;
     }
 
     /**
@@ -39,10 +39,10 @@ public class PacketBuffer {
      */
     public final void writeInt(int val){
         try {
-            this.dataBuffer[this.packetEnd++] = (byte) (val >> 24);
-            this.dataBuffer[this.packetEnd++] = (byte) (val >> 16);
-            this.dataBuffer[this.packetEnd++] = (byte) (val >> 8);
-            this.dataBuffer[this.packetEnd++] = (byte) val;
+            this.dataBuffer[this.length++] = (byte) (val >> 24);
+            this.dataBuffer[this.length++] = (byte) (val >> 16);
+            this.dataBuffer[this.length++] = (byte) (val >> 8);
+            this.dataBuffer[this.length++] = (byte) val;
         } catch (RuntimeException ignored){}
     }
 
@@ -51,12 +51,12 @@ public class PacketBuffer {
      */
     public final int readInt() {
         try {
-            this.packetEnd += 4;
+            this.length += 4;
 
-            return (this.dataBuffer[this.packetEnd - 3] << 16 & 16711680)
-                    + (this.dataBuffer[this.packetEnd - 4] << 24 & -16777216)
-                    + (0xFF00 & this.dataBuffer[this.packetEnd - 2] << 8)
-                    + (this.dataBuffer[this.packetEnd - 1] & 255);
+            return (this.dataBuffer[this.length - 3] << 16 & 16711680)
+                    + (this.dataBuffer[this.length - 4] << 24 & -16777216)
+                    + (0xFF00 & this.dataBuffer[this.length - 2] << 8)
+                    + (this.dataBuffer[this.length - 1] & 255);
         } catch (RuntimeException ignored) {}
         return -1;
     }
@@ -64,7 +64,7 @@ public class PacketBuffer {
     public final String readString(){
         StringBuilder bldr = new StringBuilder();
         byte b;
-        while ((b = dataBuffer[this.packetEnd++]) != 10) {
+        while ((b = dataBuffer[this.length++]) != 10) {
             bldr.append((char) b);
         }
         return bldr.toString();
