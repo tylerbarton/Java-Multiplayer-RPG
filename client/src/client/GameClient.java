@@ -1,12 +1,13 @@
 package src.client;
 
-import src.graphics.DrawingArea;
+import src.client.net.PacketHandler;
 import src.graphics.GraphicsController;
 import src.world.Coord;
 import src.world.WorldMap;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 
 /**
  * Handles Client Logic
@@ -14,7 +15,7 @@ import java.awt.event.MouseEvent;
  */
 public class GameClient implements Runnable {
     // Game manager
-    public int gameState = 0;
+    public int gameState = 0; // 0 - loading, 1-login, 2-game
 
     // Graphical Components
     GameApplet applet;
@@ -23,6 +24,9 @@ public class GameClient implements Runnable {
     public static int FPS;
     public int currentFPS;
     public long lastFPSUpdate;
+
+    // Networking components
+    public PacketHandler packetHandler;
 
     /**
      * @return The graphics handler for the game
@@ -39,24 +43,7 @@ public class GameClient implements Runnable {
         this.applet = gameApplet;
         GameClient.graphic = new GraphicsController(gameApplet.width, gameApplet.height);
     }
-
-    /**
-     * Callable thread method to run the client
-     */
-    @Override
-    public final void run() {
-        // Start game
-        // TODO: initial loading of everything
-        GameClient.graphic = new GraphicsController(DrawingArea.getWidth(),
-                DrawingArea.getHeight());
-        this.lastFPSUpdate = System.currentTimeMillis();
-        this.gameState = 1;
-
-        // Game is running
-        while(this.gameState == 1){
-            runGameLoop();
-        }
-    }
+    private boolean shift = false;
 
     /**
      * Handles the clients main loop
@@ -80,11 +67,41 @@ public class GameClient implements Runnable {
     }
 
     /**
+     * Callable thread method to run the client
+     */
+    @Override
+    public final void run() {
+        this.lastFPSUpdate = System.currentTimeMillis();
+
+        // Login
+        this.gameState = 1;
+        try {
+            this.packetHandler = new PacketHandler(Config.HOST, Config.HOST_PORT);
+            packetHandler.openSocket();
+            // TODO: Login
+            System.out.println("Connection established");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Connection failed.");
+        }
+
+        // Game is running
+        this.gameState = 2;
+        while(this.gameState == 2){
+            runGameLoop();
+        }
+    }
+
+    /**
      * Handles keyboard input
      * @param e
      */
     public void handleKeyPressed(KeyEvent e){
+        if(e.getKeyCode() == 16) shift = true;
+    }
 
+    public void handleKeyReleased(KeyEvent e){
+        if(e.getKeyCode() == 16) shift = false;
     }
 
     /**
