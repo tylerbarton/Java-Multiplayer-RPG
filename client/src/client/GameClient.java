@@ -56,12 +56,19 @@ public class GameClient implements Runnable {
 
     /**
      * Handles mouse input
-     * @param e
+     * @param e Mouse event
      */
     public void handleMousePressed(MouseEvent e){
         int x = e.getX();
         int y = e.getY();
         Coord world = WorldMap.ScreenToWorldCoord(x, y);
+
+        // Send a movement packet
+        try {
+            new MovementPacket(applet.packetHandler.getSocket(), x, y).send();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
         if(Config.VERBOSE_MODE){
             System.out.println("Mouse World Coords: " + world.x + "," + world.y);
