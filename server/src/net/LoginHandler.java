@@ -41,6 +41,12 @@ public class LoginHandler implements Runnable {
             LOGGER.info("Account logged in: " + username);
         } else {
             LOGGER.info("Account created: " + username);
+            p = new Player();
+            p.username = username;
+            p.displayName = username;
+            p.xPos = 0;
+            p.yPos = 0;
+            db.querySavePlayerData(p);
         }
         // TODO: Import into server player handler
     }
