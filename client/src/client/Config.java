@@ -1,16 +1,18 @@
-package client;
+package src.client;
 
 /**
- * Manages the options for the client
- * @author Tyler Barton
+ * Houses configurable options applicable to the entire client.
  */
 public class Config {
-    /**
-     * The game is hosted locally and does not require server-mode setup.
-     */
-    public static final boolean isLocal = true;
-
-    public static final String CLIENT_TITLE = "CS242 Final Project";
+    // Client Window Configuration
+    public static final String CLIENT_TITLE = "CS242 Final Project by Tyler Barton";
     public static final int CLIENT_WIDTH = 800;
     public static final int CLIENT_HEIGHT = 526;
+
+    // Graphical Performance
+    public static final int MAX_SPRITES = 200;
+
+    // Debug Options
+    public static final boolean VERBOSE_MODE = true;
+    public static final boolean DRAW_FPS = true;
 }

@@ -61,43 +61,63 @@ Code will most likely not be written to expressly and explicitly demonstrate Mod
 - Week 1: Client
 
 1.1 Running the application creates a new window on the user's desktop to be interacted with.
+
 1.2 Hooks user input to be parsed locally (in the client).
+
 1.3 Displays graphical entities to the user (view component).
+
 1.4 Depending on game-camera location, does not draw entities that would not be visible on screen
+
 1.5 Draws Player entity in the middle of the screen
+
 1.6 Clicking on an entity indicates some type of interaction (will be implemented in later weeks)
 
-1.6 Prototype client->server packets
 1.7 Draws tiles as map with (x,y) positioning
 
 
 - Week 2: Server
 
 2.1 Running the server launches a command-line-interface that displays information
+
 2.2 Server accepts connections on a pre-determined port
+
 2.3 Server verifies and accepts client connections
+
 2.4 Create an Entity object (for all interactable world objects)
-2.4.1 Create a player object, child of entity
+
+* 2.4.1 Create a player object, child of entity
+
 2.5 Each connected client creates a player entity in the server
+
 2.6 Server sends packets to clients
 
 - Week 3: Server + Client Relations
 
 3.1 Is able to maintain a connection to multiple clients without dropping
+
 3.2 Sends entity position updates to each individual client
+
 3.3 Saves world state and player information
+
 3.4 Implements a* or dijkstra's algorithm for entity movement 
+
 3.5 Draws a username above each player entity 
+
 3.6 Draws a health bar above each entity; health is managed by the server 
 
 - Week 4: Gameplay Mechanics
 By this point, the framework for the gameplay should be implemented and should now just be linked together to be managed by the server and then displayed to the player. 
 
 4.1 Clicking on an entity in the client sends a packet to the server, indicating some sort of 'attack' action
+
 4.2 A dead NPC is removed from the world
+
 4.3 A dead player receives some penalty and is relocated to a grave yard
+
 4.4 Graveyard location (likely to be a square) does not accept damage events
+
 4.5 Damage to entities is calculated via some state
+
 4.6 An indicator for player progress. Some games commonly use experience, money, or items. Since time is an issue, this indicator will be simple.
 
 
