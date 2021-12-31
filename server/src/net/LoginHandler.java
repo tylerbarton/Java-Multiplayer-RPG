@@ -26,8 +26,7 @@ public class LoginHandler implements Runnable {
     public LoginHandler(Server server){
         this.server = server;
         //this.db = server.getDatabase();
-        this.db = new Database(this.server);
-        this.db.open();
+        this.db = server.getDatabase();
         requests = new ConcurrentLinkedQueue<>();
     }
 
@@ -35,15 +34,21 @@ public class LoginHandler implements Runnable {
      * Processes the login request
      * @param request Generated login request
      */
-    public void processRequest(final LoginRequest request){
+    public Player processRequest(final LoginRequest request){
         String username = request.username;
         Player p = db.queryLoadPlayerDataByName(username);
         if(p != null){
             LOGGER.info("Account logged in: " + username);
         } else {
             LOGGER.info("Account created: " + username);
+            p = new Player();
+            p.username = username;
+            p.displayName = username;
+            p.xPos = 0;
+            p.yPos = 0;
+            db.querySavePlayerData(p);
         }
-        // TODO: Import into server player handler
+        return p;
     }
 
     /**

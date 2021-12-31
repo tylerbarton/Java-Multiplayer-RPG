@@ -9,14 +9,21 @@ public class WorldMap {
     private int[][] spriteData;
     private int[][] collisionData; // 1-impassable, 0-walkable
 
-
     public WorldMap(int width, int height){
         dimX = width;
         dimY = height;
         spriteData = new int[height][width];
         collisionData = new int[height][width];
         entityHandler = new EntityHandler();
+        entityHandler.createPlayer();
     }
+
+    public EntityHandler getEntityHandler(){return entityHandler;}
+
+    /**
+     * @return true if a screen redraw should happen due to entity changes
+     */
+    public boolean needsUpdate(){return entityHandler.changed;}
 
     /**
      * Converts screen position to world position
